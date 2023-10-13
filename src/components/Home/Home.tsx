@@ -1,10 +1,8 @@
 import React from 'react';
-// import WalletConnect from '../Wallet/WalletConnect'
 
 function Home() {
   return (
     <div className='w-full h-full rounded-[25px] overflow-x-hidden overflow-scroll pr-6'>
-        {/* <WalletConnect /> */}
         <div className='w-full h-[50%] flex justify-between items-center'>
             <div className='w-[65%] bg-[#ffffffde] border border-[#292929] h-[85%] text-center rounded-[25px]'>
                 Hello
