@@ -28,7 +28,7 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #888;
+  background: #84848444;
   border-radius: 5px;
 }
 
@@ -41,6 +41,21 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #00ffc3;
+}
+
+
+
+@media screen and (max-width: 800px) {
+  /* For Webkit-based browsers (Chrome, Safari and Opera) */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* For IE, Edge and Firefox */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 }
 
 /* a {

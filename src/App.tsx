@@ -1,18 +1,25 @@
 
-import Navbar from './components/Navbar/Navbar'
-import { useDarkMode } from './contexts/DarkModeContext'
-import Home from './components/Home/Home';
-import './App.css'
+import {
+  Routes,
+  Route
+} from "react-router-dom";
 import Layout from './components/Layout/Layout';
+import Home from './components/Home/Home';
+import { useDarkMode } from './contexts/DarkModeContext'
+import './App.css'
+import NotFound from "./components/NotFound/NotFound";
 
 function App() {
   const { theme } = useDarkMode();
 
   return (
     <div id={theme}>
-      <Layout>
-        <Home/>
-      </Layout>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
     </div>
   )
 }

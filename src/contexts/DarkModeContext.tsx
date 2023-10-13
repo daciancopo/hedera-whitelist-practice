@@ -14,7 +14,7 @@ export const DarkModeProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const toggleDarkMode = () => {
     setDarkMode((prev) => !prev);
-    darkMode ? setTheme("dark") : setTheme("light");
+    !darkMode ? setTheme("dark") : setTheme("light");
   };
 
   return (
