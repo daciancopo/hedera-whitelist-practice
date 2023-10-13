@@ -10,7 +10,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <div className="w-[140px] flex justify-center items-center p-4">
-      <div className='bg-[#141414] w-[80px] h-full rounded-[20px] flex flex-col justify-between items-center p-9 border-2 border-[#00ffc3]'>
+      <div className='bg-[#292929] w-[80px] h-full rounded-[20px] flex flex-col justify-between items-center p-9 border-2 border-[#00ffc3]'>
         <div className='w-[60px]'>
             <img src={logo} />
         </div>
