@@ -3,13 +3,21 @@ import React from 'react';
 
 function Home() {
   return (
-    <div className='w-full h-full  p-2 rounded-[25px]'>
+    <div className='w-full h-full rounded-[25px] overflow-x-hidden overflow-scroll pr-6'>
         {/* <WalletConnect /> */}
         <div className='w-full h-[50%] flex justify-between items-center'>
             <div className='w-[65%] bg-[#ffffffde] border border-[#141414] h-[85%] text-center rounded-[25px]'>
                 Hello
             </div>
             <div className='w-[30%] bg-[#141414] border hover:border-[#ffffffde] h-[85%] text-center rounded-[25px]'>
+                Hello
+            </div>
+        </div>
+        <div className='w-full h-[50%] flex justify-between items-center'>
+            <div className='w-[47%] bg-[#ffffffde] border border-[#141414] h-[85%] text-center rounded-[25px]'>
+                Hello
+            </div>
+            <div className='w-[47%] bg-[#141414] border hover:border-[#ffffffde] h-[85%] text-center rounded-[25px]'>
                 Hello
             </div>
         </div>

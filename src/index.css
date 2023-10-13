@@ -12,13 +12,35 @@
 }
 
 #dark {
-  background-color: #292929;
+  background-color: #333333;
   color: #ffffffde;
 }
 
 #light {
   background-color: #ffffffde;
   color: #1e1e1e;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #141414;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #00ffc3;
 }
 
 /* a {
