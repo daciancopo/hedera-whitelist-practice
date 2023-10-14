@@ -30,7 +30,7 @@ const Layout = () => {
           <Outlet />
         </div>
         {!isMobile && (
-            <div className='mt-[20px] w-full text-center text-[#999]'>
+            <div className='mt-[20px] w-full text-center text-[#888]'>
               Made with love ❤️ by Buidler-labs Team
             </div>
           )

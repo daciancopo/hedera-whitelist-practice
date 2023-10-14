@@ -9,10 +9,11 @@ import logo from "../../assets/logonew.svg";
 const Navbar: React.FC = () => {
   const { toggleDarkMode } = useDarkMode();
   const isMobile = useMediaQuery({ maxWidth: 768 });
+  const isTablet = useMediaQuery({ maxWidth: 1000 });
   
   return (
-    <div className="flex justify-between pt-10 pr-10 pl-10 pb-5">
-      {isMobile ? (
+    <div className="flex justify-between pt-10 pr-16 pl-16 pb-4">
+      {isMobile && (
         <div
         role='button'
         onClick={toggleDarkMode}
@@ -20,9 +21,10 @@ const Navbar: React.FC = () => {
         >
             <img src={darkModeImg} />
         </div>
-      ) : (
+      )}
+      {!isTablet && (
           <div className='h-auto text-[30px]'>
-            <h1 className='mt-2'>
+            <h1 className='mt-1'>
                 Whitelist<span className='text-[#00ffc3] bg-[#292929] rounded-full pl-2 pr-2'>.me</span>
             </h1>
           </div>
@@ -32,7 +34,7 @@ const Navbar: React.FC = () => {
             <img src={logo} />
           </div>
         ) : (
-      <div className='w-[45%] mt-2'>
+      <div className='w-[40%] mt-1'>
         <input className='w-full text-white bg-[#292929] h-10 p-4 rounded-full border hover:border-[#00ffc3]' placeholder='Search..' />
       </div>
         )}

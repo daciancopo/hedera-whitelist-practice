@@ -1,34 +1,35 @@
-// // src/components/WhitelistAccount.tsx
-// import React, { useState } from 'react';
-// import { useWallet } from "@buidlerlabs/hashgraph-react-wallets"
-// import { HashpackConnector } from "@buidlerlabs/hashgraph-react-wallets/connectors"
+import React, { useState } from 'react';
 
 
-// const WhitelistAccount = () => {
-//   const [account, setAccount] = useState('');
-// //   const {extensionReady, isConnected, signer, connect, disconnect} = useWallet(HashpackConnector);
+const WhitelistAccount: React.FC = () => {
+  const [accountId, setAccountId] = useState<string>('');
+  const [whitelisted, setWhitelisted] = useState<boolean | null>(null);
 
-//   const whitelistAccount = async () => {
-//     // Use the Hedera client to whitelist the account
-//     try {
-//       // Call the appropriate Hedera function here
-//     } catch (error) {
-//       console.error('Error whitelisting account:', error);
-//     }
-//   }
+  const handleWhitelist = async () => {
+    try {
+      // const txResponse = await whitelistAccount(accountId);
+      // console.log('Transaction ID:', txResponse.transactionId.toString());
+      setWhitelisted(true);
+    } catch (error) {
+      console.error('Error whitelisting account:', error);
+      setWhitelisted(false);
+    }
+  };
 
-//   return (
-//     <div>
-//       <h2>Whitelist Account</h2>
-//       <input
-//         type="text"
-//         placeholder="Account ID"
-//         value={account}
-//         onChange={(e) => setAccount(e.target.value)}
-//       />
-//       <button onClick={whitelistAccount}>Whitelist</button>
-//     </div>
-//   );
-// }
+  return (
+    <div>
+      <h2>Whitelist Account</h2>
+      <input
+        type="text"
+        placeholder="Account ID"
+        value={accountId}
+        onChange={(e) => setAccountId(e.target.value)}
+      />
+      <button onClick={handleWhitelist}>Whitelist</button>
+      {whitelisted === true && <p>Account whitelisted successfully!</p>}
+      {whitelisted === false && <p>Whitelisting failed.</p>}
+    </div>
+  );
+};
 
-// export default WhitelistAccount;
+export default WhitelistAccount;

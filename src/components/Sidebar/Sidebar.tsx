@@ -14,15 +14,15 @@ const Sidebar: React.FC = () => {
         <div className='w-[70px]'>
           <Link to="/"><img src={logo} /></Link>
         </div>
-        <div className='h-[76%] w-[70px] flex flex-col justify-around items-center text-[#ffffffde] rounded-[15px] bg-[#00ffbb84]'>
+        <div className='h-[76%] w-[70px] flex flex-col justify-around items-center text-[#ffffffde] rounded-[15px] bg-[#00ffbb8d]'>
             <div>
               <Link to="/">Home</Link>
             </div>
             <div>
-              <Link to="/page1">Link1</Link>
+              <Link to="/check-whitelist">CW</Link>
             </div>
             <div>
-              <Link to="/page2">Link2</Link>
+              <Link to="/whitelist-account">WA</Link>
             </div>
         </div>
         <div
