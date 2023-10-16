@@ -1,50 +1,71 @@
 
-import { Client, AccountId, PrivateKey, ContractCallQuery, ContractExecuteTransaction, ContractFunctionParameters } from "@hashgraph/sdk";
+// import { Client, ContractId, AccountId, PrivateKey, ContractCallQuery, ContractExecuteTransaction, ContractFunctionParameters } from "@hashgraph/sdk";
 
-const operatorId = AccountId.fromString(process.env.OPERATOR_ID);
-const operatorKey = PrivateKey.fromString(process.env.OPERATOR_PVKEY);
-const network = process.env.HEDERA_NETWORK;
+// const contractId = ContractId.fromString('0.0.4528380');
 
-const client = Client.forNetwork(network).setOperator(operatorId, operatorKey);
+// const operatorId = AccountId.fromString(process.env.OPERATOR_ID);
+// const operatorKey = PrivateKey.fromString(process.env.OPERATOR_PVKEY);
+// // const network = process.env.HEDERA_NETWORK;
 
-
-export async function executeContractFcn( accountId ) {
-
-	const contractExecuteWhitelist = await new ContractExecuteTransaction()
-		.setContractId('0.0.4528380')
-		.setGas(100000)
-		.setFunction("whitelist",
-		new ContractFunctionParameters()
-		.addString(accountId));
-		
-		const contractExecuteSubmit = await contractExecuteWhitelist.execute(client);
-		const contractExecuteReceipt = await contractExecuteSubmit.getReceipt(client);
-		
-		console.log("The transaction status is ", contractExecuteReceipt.status.toString());
-		
-	return contractExecuteReceipt.status;
-
-}
+// const client = Client.forTestnet().setOperator(operatorId, operatorKey);
+// // const client = Client.forNetwork(network).setOperator(operatorId, operatorKey);
 
 
-export async function callContractFcn( accountId ) {
-
-	const contractQueryWhitelist = await new ContractCallQuery()
-		.setContractId('0.0.4528380')
-		.setGas(100000)
-		.setFunction("whitelist",
-			new ContractFunctionParameters()
-			.addString(accountId));
-		
-		const contractQuerySubmit = await contractQueryWhitelist.execute(client);
-		const contractQueryResult = await contractQuerySubmit.getString(0);
-		
-		console.log("The transaction status is ", contractQueryResult);
-		
-	return contractQueryResult;
-
-}
+// // const operatorId = AccountId.fromString('0.0.4528272');
+// // const operatorKey = PrivateKey.fromString('1b01beb02610b1e735b1e54e6b4875049c06faeb9115122d5bb6af1a05d04961');
 
 
+// // export {operatorId, operatorKey, network, client}
 
+// async function executeContractFcn( accountId ) {
+
+//     const accountIdFormat = AccountId.fromString(accountId);
+
+//     const contractExecuteWhitelist = await new ContractExecuteTransaction()
+//       .setContractId(contractId)
+//       .setGas(100000)
+//       .setFunction("whitelist",
+//         new ContractFunctionParameters()
+//         .addAddress(accountIdFormat.toSolidityAddress()));
+
+      
+//       const contractExecuteSubmit = await contractExecuteWhitelist.execute(client);
+//       const contractExecuteRecord = await contractExecuteSubmit.getRecord(client);
+
+//       console.log("The transaction result is ", contractExecuteRecord)
+      
+//     return contractExecuteRecord;
+  
+//   }
+
+
+//   // Call Query Whitelist Function
+
+//   async function callContractFcn( accountId ) {
+
+//     const accountIdFormat = AccountId.fromString(accountId);
+
+//     // console.log("Client:", client)
+    
+//     const contractQueryWhitelist = await new ContractCallQuery()
+//     .setContractId(contractId)
+//     .setGas(100000)
+//     .setFunction("whitelist", new ContractFunctionParameters()
+//       .addAddress(accountIdFormat.toSolidityAddress()));
+    
+      
+    
+//     console.log("contractQueryWhitelist:", contractQueryWhitelist)
+    
+//     const contractQuerySubmit = await contractQueryWhitelist.execute(client);
+
+//     console.log("contractQuerySubmit:", contractQuerySubmit)
+
+//     const contractQueryResult = await contractQuerySubmit;
+
+//     console.log("The caller result is: ", contractQueryResult);
+      
+//     return contractQueryResult;
+  
+//   }
 

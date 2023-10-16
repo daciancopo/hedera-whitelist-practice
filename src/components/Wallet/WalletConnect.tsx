@@ -8,7 +8,9 @@ const WalletConnect = () => {
 
     const handleConnect = useCallback(async () => {
         setLoading(true);
-        await connect();
+        await connect().then((accounts) => {
+            console.log("Wallet Account:", accounts)
+        });
         setLoading(false);
     }, [connect]);
 
@@ -19,11 +21,11 @@ const WalletConnect = () => {
     }, [connect]);
 
     return (
-        <div>
+        <div className="mt-[-5px]">
             {
                 isConnected
-                ?  <button onClick={handleDisconnect} disabled={loading} className="bg-[#292929] text-white border border-[#ffffffde] w-28 h-12 font-bold rounded-[12px] hover:bg-[#ff005d] hover:font-bold">Disconnect</button>
-                :  <button onClick={handleConnect} className="bg-[#292929] text-white border border-[#ffffffde] w-28 h-12 font-bold rounded-[12px] hover:bg-[#00ffc3] hover:text-black hover:border-[#292929] hover:font-bold">{loading ? 'Loading...' : 'Connect'}</button>
+                ?  <button onClick={handleDisconnect} disabled={loading} className="bg-[#141414] text-white border-2 border-[#ff005d] w-28 h-12 font-bold rounded-[12px] hover:bg-[#ff005d]  hover:border-[#141414] hover:font-bold">Disconnect</button>
+                :  <button onClick={handleConnect} className="bg-[#141414] text-white border-2 border-[#00ffc3] w-28 h-12 font-bold rounded-[12px] hover:bg-[#00ffc3] hover:text-black hover:border-[#141414] hover:font-bold">{loading ? 'Loading...' : 'Connect'}</button>
             }
         </div>
     )
