@@ -6,19 +6,44 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: "Zt Shago Bold", "Poppins", sans-serif;
   scroll-behavior: smooth;
   color-scheme: dark;
 }
 
 #dark {
-  background-color: #292929;
-  color: #ffffffde;
+  /* background-color: #2D2E31; */
+  /* background-color: #030202; */
+  /* background-color: #1B1B1B; */
+  /* background-color: #1F1F1F; */
+  /* background-color: #292a2d; */
+  /* background-color: #1D1E21; */
+  /* background-color: #1f2024; */
+
+  background-color: #18191c;
+
+  /* background-color: #3F3D38; */
+  /* background-color: #403d39; */
+  color: #f1ece2;
+  /* color: #fffcd2; */
+  /* color: #7c7b75; */
+  /* color: #efe6dd; */
+  
 }
 
 #light {
-  background-color: #ffffffde;
-  color: #141414;
+  background-color: #fefcf2;
+  /* background-color: #F9F6EB; */
+  
+  /* color: #f1ece2; */
+  /* color: #403d39; */
+  /* color: #2D3030; */
+}
+
+.flip {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  rotate: 10deg;
 }
 
 /* width */
@@ -28,24 +53,20 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #84848444;
+  background: #252525;
   border-radius: 5px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #141414;
   border-radius: 5px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  border: 2px solid#00ffc3;
+  background: #4DFE59;
+  border: 1px solid #141312;
 }
 
 .theme-toggle {
-  filter: drop-shadow(0px 0px 8px #ffffffde);
-  -webkit-filter: drop-shadow(0px 0px 8px #ffffffde);
+  filter: drop-shadow(0px 0px 6px #dcdcdc);
+  -webkit-filter: drop-shadow(0px 0px 6px #dcdcdc);
 }
 
 

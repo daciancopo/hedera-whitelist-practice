@@ -1,8 +1,5 @@
 
-import {
-  Routes,
-  Route
-} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useDarkMode } from './contexts/DarkModeContext'
 import Layout from './components/Layout/Layout';
 import Home from './components/Home/Home';

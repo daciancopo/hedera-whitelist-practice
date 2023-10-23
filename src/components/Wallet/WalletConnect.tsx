@@ -1,16 +1,19 @@
-import { useWallet } from "@buidlerlabs/hashgraph-react-wallets"
-import { HashpackConnector } from "@buidlerlabs/hashgraph-react-wallets/connectors";
+
+
+import { HWBridgeConnector, useWallet } from "@buidlerlabs/hashgraph-react-wallets"
 import { useCallback, useState } from "react"
 
-const WalletConnect = () => {
+interface IProps {
+    connector?: HWBridgeConnector
+}
+
+const WalletConnect = ({ connector }: IProps) => {
     const [loading, setLoading] = useState(false);
-    const { isConnected, connect, disconnect } = useWallet(HashpackConnector);
+    const { isConnected, connect, disconnect } = useWallet(connector);
 
     const handleConnect = useCallback(async () => {
         setLoading(true);
-        await connect().then((accounts) => {
-            console.log("Wallet Account:", accounts)
-        });
+        await connect();
         setLoading(false);
     }, [connect]);
 
@@ -21,13 +24,13 @@ const WalletConnect = () => {
     }, [connect]);
 
     return (
-        <div className="mt-[-5px]">
+        <>
             {
                 isConnected
-                ?  <button onClick={handleDisconnect} disabled={loading} className="bg-[#141414] text-white border-2 border-[#ff005d] w-28 h-12 font-bold rounded-[12px] hover:bg-[#ff005d]  hover:border-[#141414] hover:font-bold">Disconnect</button>
-                :  <button onClick={handleConnect} className="bg-[#141414] text-white border-2 border-[#00ffc3] w-28 h-12 font-bold rounded-[12px] hover:bg-[#00ffc3] hover:text-black hover:border-[#141414] hover:font-bold">{loading ? 'Loading...' : 'Connect'}</button>
+                ?  <button onClick={handleDisconnect} disabled={loading} className="bg-[#151413] text-[17px] text-[#F43E3E] w-28 h-12 font-bold rounded-[12px] border-2 hover:bg-[#F43E3E] hover:text-black">Disconnect</button>
+                :  <button onClick={handleConnect} className="bg-[#141312] text-[18px] border text-[#89ff13] border-[#dcdcdc] w-28 h-12 font-bold rounded-[12px] hover:bg-[#89ff13] hover:text-black hover:border-[#141312]">{loading ? 'Loading...' : 'Connect'}</button>
             }
-        </div>
+        </>
     )
 }
 

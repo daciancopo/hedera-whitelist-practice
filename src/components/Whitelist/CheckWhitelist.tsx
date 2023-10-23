@@ -1,97 +1,134 @@
 import React, { useState } from 'react';
-// import * as contracts from "../../middleware/contractOperations.js";
-import { Client, ContractId, AccountId, PrivateKey, ContractCallQuery, ContractExecuteTransaction, ContractFunctionParameters } from "@hashgraph/sdk";
+import axios from 'axios';
 
-// import {operatorId, operatorKey, network, client} from "../../middleware/contractOperations.js";
+import { HWBridgeConnector, useWallet } from "@buidlerlabs/hashgraph-react-wallets"
+import { ContractExecuteTransaction, ContractFunctionParameters } from "@hashgraph/sdk";
+
+import {mirrorTxQueryFcn} from "../../utils/txQuery"
+
+import { getMirrorAccounts } from '../../hooks/accountsApi';
+import { getMirrorContract } from '../../hooks/contractsApi'
+import { hederaConst } from '../../constants/hedera';
 
 
-const CheckWhitelist: React.FC = () => {
-  const [accountId, setAccountId] = useState<string>('');
+interface IProps {
+  connector?: HWBridgeConnector
+}
 
-  const contractId = ContractId.fromString('0.0.4528380');
+const CheckWhitelist = ({ connector }: IProps) => {
 
-  const operatorId = AccountId.fromString('0.0.4528272');
-  const operatorKey = PrivateKey.fromString('1b01beb02610b1e735b1e54e6b4875049c06faeb9115122d5bb6af1a05d04961');
+  const [accId, setAccId] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<any>({});
+  const [hashLink, setHashLink] = useState<string>('');
+  const [hashLinkCheck, setHashLinkCheck] = useState<string>('');
+
+  const { signer } = useWallet(connector);
+  // const { accountId } = useAccountId(connector);
   
-  const client = Client.forTestnet().setOperator(operatorId, operatorKey);
+  const handleAddToWhitelist = async () => {
+      const callerResultExecution = await executeContractFcn();
+      console.log("Added To Whitelist: ", callerResultExecution);
+    }
 
 
-  // const operatorPublicKey = operatorKey.publicKey;
-  // const operatorEvmAddress = operatorPublicKey.toEvmAddress();
 
   const handleCheckWhitelist = async () => {
-    const callerResultExecution = await executeContractFcn(accountId);
-    const callerResulQueryt = await callContractFcn(accountId);
 
-    console.log("callerResultExecution: ", callerResultExecution);
-    console.log("callerResulQueryt: ", callerResulQueryt);
+      const getAcc = await getMirrorAccounts(accId);
+     
+        const consensusTimestamp = getAcc.transactions[0].consensus_timestamp;
+        console.log("Get Acc Value: ", consensusTimestamp);
+   
+        const getContract = await getMirrorContract(consensusTimestamp);
+ 
+        console.log("Get Contract Value: ", getContract);
+
+        const txId = consensusTimestamp.split(".");
+        const transactionId = `${accId}-${txId[0]}-${txId[1]}`;
+
+        const hashScanLink = `${hederaConst.hashScanUrl}/transactions/${transactionId}`;
+
+        setHashLinkCheck(hashScanLink);
+
+        console.log("hashScanLink Value: ", hashScanLink);
+
+        return getContract;
+        
   };
 
 
-  async function executeContractFcn( accountId: any ) {
+  //  Contract Execution Function
+  const executeContractFcn = async () => {
+    try {
+        if (!signer) return;
 
-    const accountIdFormat = AccountId.fromString(accountId);
+        // --------  Execute Contract  ----------
+        const contractExecuteWhitelist = await new ContractExecuteTransaction()
+          .setContractId(hederaConst.contractId)
+          .setGas(100000)
+          .setFunction("whitelist", new ContractFunctionParameters().addAddress(signer.getProvider()));
+        
+        const contractExecuteWhitelistFreeze = (await contractExecuteWhitelist.freezeWithSigner(signer));
+        const contractExecuteWhitelistResponse = (await contractExecuteWhitelistFreeze.executeWithSigner(signer));
 
-    const contractExecuteWhitelist = await new ContractExecuteTransaction()
-      .setContractId('0.0.4528380')
-      .setGas(100000)
-      .setFunction("whitelist",
-        new ContractFunctionParameters()
-        .addAddress(accountIdFormat.toSolidityAddress()));
+        
+        const tx = await mirrorTxQueryFcn(contractExecuteWhitelistResponse).then((res: any) => {
+          setLoading(true)
+          setData(res[0]);
+          setHashLink(res[1]);
 
-      
-      const contractExecuteSubmit = await contractExecuteWhitelist.execute(client);
-      const contractExecuteRecord = await contractExecuteSubmit.getRecord(client);
+          console.log("Tx Res Value:", res)
+          console.log("Data Value:", res[0])
 
-      console.log("The transaction result is ", contractExecuteRecord)
-      
-    return contractExecuteRecord;
-  
+        });
+        
+        console.log("HashLink Value:", contractExecuteWhitelistResponse)
+        // console.log("Executed Contract Function:", contractExecuteWhitelistResponse.transactionId.toString())
+        setLoading(false)
+        return tx;
+      } catch (error: any) {
+        console.error(error)
+      }
   }
 
-
-  // Call Query Whitelist Function
-
-  async function callContractFcn( accountId: any ) {
-
-    const accountIdFormat = AccountId.fromString(accountId);
-
-    // console.log("Client:", client)
-    
-    const contractQueryWhitelist = await new ContractCallQuery()
-    .setContractId('0.0.4528380')
-    .setGas(100000)
-    .setFunction("whitelist", new ContractFunctionParameters()
-      .addAddress(accountIdFormat.toSolidityAddress()));
-      
-    
-    console.log("contractQueryWhitelist:", contractQueryWhitelist)
-    
-    const contractQuerySubmit = await contractQueryWhitelist.execute(client);
-
-    console.log("contractQuerySubmit:", contractQuerySubmit)
-
-    const contractQueryResult = await contractQuerySubmit;
-
-    console.log("The caller result is: ", contractQueryResult);
-      
-    return contractQueryResult;
-  
-  }
 
   return (
-    <div>
-      <h2>Check Whitelist</h2>
-      <input
-        type="text"
-        placeholder="Account ID"
-        value={accountId}
-        onChange={(e) => setAccountId(e.target.value)}
-      />
-
-      <button onClick={handleCheckWhitelist}>Check Whitelist</button>
-      {/* {isWhitelisted === true && <p>Account is whitelisted.</p>} */}
-      {/* {isWhitelisted === false && <p>Account is not whitelisted.</p>} */}
+    <div className='w-full h-[500px] p-4'>
+      <div className='w-full text-center h-[150px]'>
+        {loading && !hashLink &&(
+          <div className='w-full h-100px text-[#4DFE59] text-[25px]'>
+            <h1 className='text-[30px]'>Loading..</h1>
+          </div>
+        )}
+        {hashLink && (
+          <>
+            <h1 className='text-[30px]'>Whitelisted With Success!</h1>
+            <div className='w-full h-100px text-[#4DFE59] text-[25px]'>
+              <a href={hashLink} target="_blank">Check Here - HashScan</a>
+            </div>
+          </>
+        )}
+        {hashLinkCheck && (
+          <>
+            <h1 className='text-[30px]'>Account is Whitelisted!</h1>
+            <div className='w-full h-100px text-[#4DFE59] text-[25px]'>
+              <a href={hashLink} target="_blank">Check Here - HashScan</a>
+            </div>
+          </>
+        )}
+      </div>
+      <div className='h-full flex flex-col justify-between items-center'>
+        <input
+          type="text"
+          placeholder="Account ID"
+          value={accId}
+          onChange={(e) => setAccId(e.target.value)}
+          />
+          <button className='border p-2' onClick={handleAddToWhitelist}>Add To Whitelist</button>
+          <br/>
+          <button className='border p-2' onClick={handleCheckWhitelist}>Check Whitelist</button>
+        </div>
     </div>
   );
 };
